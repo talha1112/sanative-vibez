@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../theme.dart';
+import '../services/storage_service.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -17,6 +18,55 @@ class AboutScreen extends StatelessWidget {
           const SnackBar(content: Text('Could not open the website.')),
         );
       }
+    }
+  }
+
+  Future<void> _launchUrl(BuildContext context, String urlString) async {
+    final url = Uri.parse(urlString);
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not open the link.')),
+        );
+      }
+    }
+  }
+
+  Future<void> _confirmAndClearData(BuildContext context) async {
+    final colors = Theme.of(context).colorScheme;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Clear My Data'),
+        content: const Text(
+          'This will permanently delete your locally stored check-ins and reflections from this device. This cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: TextButton.styleFrom(foregroundColor: colors.error),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    await StorageService().clearAllUserData();
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Your data has been cleared.')),
+      );
     }
   }
 
@@ -112,7 +162,47 @@ class AboutScreen extends StatelessWidget {
               ),
               
               const SizedBox(height: AppSpacing.xl),
-              
+
+              // Vibe With Us
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  color: colors.secondaryContainer.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Vibe With Us',
+                      style: typography.titleLarge?.copyWith(
+                        color: colors.onSecondaryContainer,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    Text(
+                      'Explore seven days of intentional affirmations, reflection, and personal practice—at your own pace.',
+                      style: typography.bodyMedium?.copyWith(
+                        color: colors.onSecondaryContainer.withValues(alpha: 0.9),
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    TextButton(
+                      onPressed: () => _launchUrl(context, 'https://www.sanativevibez.com/how-it-works'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: colors.onSecondaryContainer,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Text('Learn About the 7-Day Practice'),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: AppSpacing.xl),
+
               Center(
                 child: TextButton(
                   onPressed: () => _launchWebsiteUrl(context),
@@ -121,6 +211,52 @@ class AboutScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
                   ),
                   child: const Text('Visit Sanative Vibez online'),
+                ),
+              ),
+
+              const SizedBox(height: AppSpacing.xl),
+
+              // Clear My Data
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  color: colors.surface,
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  border: Border.all(
+                    color: colors.outline.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Your data',
+                      style: typography.titleMedium?.copyWith(
+                        color: colors.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    Text(
+                      'Your check-ins and reflections are stored only on this device. You can permanently delete them at any time.',
+                      style: typography.bodyMedium?.copyWith(
+                        color: colors.onSurface.withValues(alpha: 0.7),
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () => _confirmAndClearData(context),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: colors.error,
+                          side: BorderSide(color: colors.error.withValues(alpha: 0.5)),
+                        ),
+                        child: const Text('Clear My Data'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),

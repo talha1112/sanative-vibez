@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'theme.dart';
 import 'nav.dart';
 
 /// Main entry point for the application
 ///
 /// This sets up:
-/// - Provider state management (ThemeProvider, CounterProvider)
 /// - go_router navigation
 /// - Material 3 theming with light/dark modes
 void main() {
-  // Initialize the app
+  // Fonts are bundled locally under assets/fonts/. Disabling runtime
+  // fetching ensures google_fonts never calls out to the network and
+  // instead throws (surfacing a bug immediately) if a required weight
+  // is ever missing from the bundled assets.
+  GoogleFonts.config.allowRuntimeFetching = false;
   runApp(const MyApp());
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:math';
 import '../theme.dart';
 import '../services/storage_service.dart';
@@ -60,6 +61,21 @@ class _DailyPromptScreenState extends State<DailyPromptScreen> {
     super.dispose();
   }
 
+  Future<void> _launchFrequenciesUrl(BuildContext context) async {
+    final url = Uri.parse('https://www.sanativevibez.com/how-it-works');
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not open the link.')),
+        );
+      }
+    }
+  }
+
   Future<void> _saveReflection() async {
     if (_selectedChip == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -111,6 +127,49 @@ class _DailyPromptScreenState extends State<DailyPromptScreen> {
               color: colors.primary,
             ),
           ),
+          const SizedBox(height: AppSpacing.lg),
+
+          // Today's Sanative Vibez Practice
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            decoration: BoxDecoration(
+              color: colors.surface,
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              border: Border.all(
+                color: colors.outline.withValues(alpha: 0.2),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Today’s Sanative Vibez Practice',
+                  style: typography.titleMedium?.copyWith(
+                    color: colors.onSurface,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  'Take a moment for today\'s affirmation or reflection. If you are participating in the 7-Day Personal Practice, this app is here to accompany your experience.',
+                  style: typography.bodyMedium?.copyWith(
+                    color: colors.onSurface.withValues(alpha: 0.75),
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                TextButton(
+                  onPressed: () => _launchFrequenciesUrl(context),
+                  style: TextButton.styleFrom(
+                    foregroundColor: colors.primary,
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: const Text('Learn about custom-created frequencies'),
+                ),
+              ],
+            ),
+          ),
+
           const SizedBox(height: AppSpacing.xl),
           
           // Prompt Card

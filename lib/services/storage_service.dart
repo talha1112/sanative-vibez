@@ -107,17 +107,12 @@ class StorageService {
         }
       }
       
-      // If list is empty, let's inject some sample data for the prototype
-      if (checkIns.isEmpty) {
-        return _getSampleData();
-      }
-      
       // Sort newest first
       checkIns.sort((a, b) => b.date.compareTo(a.date));
       return checkIns;
     } catch (e) {
       debugPrint('Error getting check-ins: $e');
-      return _getSampleData();
+      return [];
     }
   }
 
@@ -158,15 +153,11 @@ class StorageService {
     }
   }
 
-  List<CheckIn> _getSampleData() {
-    final now = DateTime.now();
-    return [
-      CheckIn(id: '1', date: now.subtract(const Duration(days: 1)), stressLevel: 'Grounded', supportNeeded: 'A quiet moment', intention: 'Slow down'),
-      CheckIn(id: '2', date: now.subtract(const Duration(days: 2)), stressLevel: 'Full', supportNeeded: 'Clearer thoughts', intention: 'Be kind to myself'),
-      CheckIn(id: '3', date: now.subtract(const Duration(days: 3)), stressLevel: 'Weary', supportNeeded: 'More energy', intention: 'Focus on one next step'),
-      CheckIn(id: '4', date: now.subtract(const Duration(days: 4)), stressLevel: 'Grounded', supportNeeded: 'Better rest', intention: 'Make space to breathe'),
-      CheckIn(id: '5', date: now.subtract(const Duration(days: 5)), stressLevel: 'Weary', supportNeeded: 'A quiet moment', intention: 'Release what I cannot control'),
-      CheckIn(id: '6', date: now.subtract(const Duration(days: 6)), stressLevel: 'Full', supportNeeded: 'Letting something go', intention: 'Slow down'),
-    ]..sort((a, b) => b.date.compareTo(a.date));
+  /// Deletes all locally stored user-generated reflection data
+  /// (check-ins and daily reflections). Used by the "Clear My Data" flow.
+  Future<void> clearAllUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_checkInsKey);
+    await prefs.remove(_dailyReflectionsKey);
   }
 }

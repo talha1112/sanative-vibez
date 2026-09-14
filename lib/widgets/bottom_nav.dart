@@ -6,7 +6,7 @@ class BottomNavDestinations {
   static const int home = 0;
   static const int daily = 1;
   static const int calmLibrary = 2;
-  static const int freeTrial = 3;
+  static const int vibeWithUs = 3;
   static const int about = 4;
 }
 
@@ -18,23 +18,22 @@ class MainNavigationShell extends StatelessWidget {
     required this.navigationShell,
   });
 
-  Future<void> _launchTrialUrl(BuildContext context) async {
-    final url = Uri.parse(
-        'https://www.sanativevibez.com/pricing-plans/plan-customization?planId=301cfd70-15f5-41fb-95ad-d0cdf4ea2025&checkoutFlowId=d73e1e66-fcda-4e66-ab75-a37e16ca7cb7&pricingVariantId=89c714a6-2ed2-49c9-825f-216009b017a6');
+  Future<void> _launchVibeWithUsUrl(BuildContext context) async {
+    final url = Uri.parse('https://www.sanativevibez.com/how-it-works');
     try {
       if (await canLaunchUrl(url)) {
         await launchUrl(url, mode: LaunchMode.externalApplication);
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Your free-trial page will open in your device\'s browser.')),
+            const SnackBar(content: Text('This will open in your device\'s browser.')),
           );
         }
       }
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Your free-trial page will open in your device\'s browser.')),
+          const SnackBar(content: Text('This will open in your device\'s browser.')),
         );
       }
     }
@@ -93,8 +92,8 @@ class MainNavigationShell extends StatelessWidget {
           child: NavigationBar(
             selectedIndex: _mapBranchToIndex(navigationShell.currentIndex),
             onDestinationSelected: (index) {
-              if (index == BottomNavDestinations.freeTrial) {
-                _launchTrialUrl(context);
+              if (index == BottomNavDestinations.vibeWithUs) {
+                _launchVibeWithUsUrl(context);
                 return;
               }
               final branchIndex = _mapIndexToBranch(index);
@@ -120,7 +119,7 @@ class MainNavigationShell extends StatelessWidget {
               ),
               NavigationDestination(
                 icon: Icon(Icons.auto_awesome_outlined),
-                label: 'Free Trial',
+                label: 'Vibe With Us',
               ),
               NavigationDestination(
                 icon: Icon(Icons.info_outline),

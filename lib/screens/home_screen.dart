@@ -16,23 +16,22 @@ class HomeScreen extends StatelessWidget {
     return 'Good evening';
   }
 
-  Future<void> _launchTrialUrl(BuildContext context) async {
-    final url = Uri.parse(
-        'https://www.sanativevibez.com/pricing-plans/plan-customization?planId=301cfd70-15f5-41fb-95ad-d0cdf4ea2025&checkoutFlowId=d73e1e66-fcda-4e66-ab75-a37e16ca7cb7&pricingVariantId=89c714a6-2ed2-49c9-825f-216009b017a6');
+  Future<void> _launchSevenDayPracticeUrl(BuildContext context) async {
+    final url = Uri.parse('https://www.sanativevibez.com/how-it-works');
     try {
       if (await canLaunchUrl(url)) {
         await launchUrl(url, mode: LaunchMode.externalApplication);
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Your free-trial page will open in your device\'s browser.')),
+            const SnackBar(content: Text('This will open in your device\'s browser.')),
           );
         }
       }
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Your free-trial page will open in your device\'s browser.')),
+          const SnackBar(content: Text('This will open in your device\'s browser.')),
         );
       }
     }
@@ -231,62 +230,44 @@ class HomeScreen extends StatelessWidget {
 
                   const SizedBox(height: AppSpacing.xl),
 
-                  // 3. FREE TRIAL FEATURE CARD
-                  Card(
-                    color: colors.primary.withValues(alpha: 0.9),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
+                  // 3. 7-DAY PERSONAL PRACTICE CARD
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    decoration: BoxDecoration(
+                      color: colors.primary.withValues(alpha: 0.9),
                       borderRadius: BorderRadius.circular(AppRadius.lg),
                     ),
-                    child: InkWell(
-                      onTap: () => _launchTrialUrl(context),
-                      borderRadius: BorderRadius.circular(AppRadius.lg),
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSpacing.lg),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(AppSpacing.sm),
-                              decoration: BoxDecoration(
-                                color: colors.onPrimary.withValues(alpha: 0.2),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.auto_awesome_outlined,
-                                color: colors.onPrimary,
-                                size: 24,
-                              ),
-                            ),
-                            const SizedBox(width: AppSpacing.md),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Start your free trial today',
-                                    style: typography.titleLarge?.copyWith(
-                                      color: colors.onPrimary,
-                                    ),
-                                  ),
-                                  const SizedBox(height: AppSpacing.xs),
-                                  Text(
-                                    'Seven days of gentle, individualized Sanative Vibez support.',
-                                    style: typography.bodyMedium?.copyWith(
-                                      color: colors.onPrimary.withValues(alpha: 0.9),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: AppSpacing.sm),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              color: colors.onPrimary,
-                              size: 16,
-                            ),
-                          ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Explore the 7-Day Personal Practice',
+                          style: typography.titleLarge?.copyWith(
+                            color: colors.onPrimary,
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          'The Sanative Vibez 7-Day Personal Practice brings together custom-created frequencies, daily reflection prompts, affirmations, and this companion app. Choose how you engage with each element in a rhythm that fits your life.',
+                          style: typography.bodyMedium?.copyWith(
+                            color: colors.onPrimary.withValues(alpha: 0.95),
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () => _launchSevenDayPracticeUrl(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: colors.onPrimary,
+                              foregroundColor: colors.primary,
+                            ),
+                            child: const Text('Learn About the 7-Day Practice'),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
@@ -327,11 +308,11 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: AppSpacing.md),
                         _ActionCard(
-                          title: 'Insights',
-                          subtitle: 'See your patterns with curiosity.',
+                          title: 'Reflection History',
+                          subtitle: 'Revisit your past check-ins and reflections.',
                           backgroundColor: colors.tertiaryContainer,
                           iconColor: colors.onTertiaryContainer,
-                          icon: Icons.insights_outlined,
+                          icon: Icons.auto_stories_outlined,
                           onTap: () => context.push('/insights'),
                         ),
                       ],
