@@ -242,14 +242,14 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Explore the 7-Day Personal Practice',
+                          'The Sanative Vibez Experience',
                           style: typography.titleLarge?.copyWith(
                             color: colors.onPrimary,
                           ),
                         ),
                         const SizedBox(height: AppSpacing.sm),
                         Text(
-                          'The Sanative Vibez 7-Day Personal Practice brings together custom-created frequencies, daily reflection prompts, affirmations, and this companion app. Choose how you engage with each element in a rhythm that fits your life.',
+                          'Explore seven days of intentional affirmations, reflection, and personal practice—at your own pace.',
                           style: typography.bodyMedium?.copyWith(
                             color: colors.onPrimary.withValues(alpha: 0.95),
                             height: 1.5,
@@ -264,7 +264,7 @@ class HomeScreen extends StatelessWidget {
                               backgroundColor: colors.onPrimary,
                               foregroundColor: colors.primary,
                             ),
-                            child: const Text('Learn About the 7-Day Practice'),
+                            child: const Text('Vibe With Us'),
                           ),
                         ),
                       ],
