@@ -1,7 +1,7 @@
 name: sanative_vibez
 description: "Sanative Vibez is a serene mobile-first wellness companion designed to help you gently reset, reflect, and cultivate a sense of calm in your daily life."
 publish_to: "none"
-version: 1.0.0
+version: 1.0.1+2
 
 environment:
   sdk: ^3.6.0

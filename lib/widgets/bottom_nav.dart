@@ -21,19 +21,16 @@ class MainNavigationShell extends StatelessWidget {
   Future<void> _launchVibeWithUsUrl(BuildContext context) async {
     final url = Uri.parse('https://www.sanativevibez.com/start-your-7-day-experience');
     try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
-      } else {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('This will open in your device\'s browser.')),
-          );
-        }
+      final launched = await launchUrl(url, mode: LaunchMode.externalApplication);
+      if (!launched && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not open the link. Please try again.')),
+        );
       }
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('This will open in your device\'s browser.')),
+          const SnackBar(content: Text('Could not open the link. Please try again.')),
         );
       }
     }

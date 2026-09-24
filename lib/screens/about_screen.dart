@@ -9,8 +9,11 @@ class AboutScreen extends StatelessWidget {
   Future<void> _launchWebsiteUrl(BuildContext context) async {
     final url = Uri.parse('https://www.sanativevibez.com');
     try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
+      final launched = await launchUrl(url, mode: LaunchMode.externalApplication);
+      if (!launched && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not open the website.')),
+        );
       }
     } catch (e) {
       if (context.mounted) {
@@ -24,8 +27,11 @@ class AboutScreen extends StatelessWidget {
   Future<void> _launchUrl(BuildContext context, String urlString) async {
     final url = Uri.parse(urlString);
     try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
+      final launched = await launchUrl(url, mode: LaunchMode.externalApplication);
+      if (!launched && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not open the link.')),
+        );
       }
     } catch (e) {
       if (context.mounted) {

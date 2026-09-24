@@ -64,8 +64,11 @@ class _DailyPromptScreenState extends State<DailyPromptScreen> {
   Future<void> _launchFrequenciesUrl(BuildContext context) async {
     final url = Uri.parse('https://www.sanativevibez.com/start-your-7-day-experience');
     try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
+      final launched = await launchUrl(url, mode: LaunchMode.externalApplication);
+      if (!launched && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not open the link.')),
+        );
       }
     } catch (e) {
       if (context.mounted) {
